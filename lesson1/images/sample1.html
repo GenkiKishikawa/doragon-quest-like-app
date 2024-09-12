@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // ゲーム
+    class GameManager {
+      constructor() {
+        this.characterList = [] // キャラのHP/MPなど...
+        this.monsterList = [] // 敵のHP/MPなど...
+        this.characterActionList = [] // キャラが選択した行動
+        this.monsterActionList = [] // 敵が選択した行動
+        this.battleStatus = 0 // 
+      }
+
+      addCharacter(character) {
+        this.characterList.push(character)
+      }
+
+      addMonster(monster) {
+        this.monsterList.push(monster)
+      }
+
+      // 行動順を決定するメソッド
+      decideActionOrder() {
+        // キャラクターのリストと、モンスターのリストを結合する
+        var array = this.characterList.concat(this.monsterList)
+
+        // スピード * 係数をランダムで全てのキャラにセット
+        var s_array = array.map(chara => {
+          chara.speed = chara.speed * (0.8 + Math.random() * 0.4)
+          return chara
+        })
+
+        // 早い順に並べ替えた配列を作成
+        return s_array.sort((a, b) => a.speed - b.speed)
+      }
+    }
+
+    class PlayerCharacter {
+      constructor(name, hp, speed, attack, defense) {
+        this.name = name
+        this.hp = hp
+        this.speed = speed
+        this.attack = attack
+        this.defense = defense
+      }
+    }
+
+    class MonsterCharacter {
+      constructor(name, hp, speed, attack, defense) {
+        this.name = name
+        this.hp = hp
+        this.speed = speed
+        this.attack = attack
+        this.defense = defense
+      }
+    }
+
+    var chara1 = new PlayerCharacter("アベル", 100, 80, 100, 100)
+    var chara2 = new PlayerCharacter("カイン", 100, 110, 100, 100)
+    var chara3 = new PlayerCharacter("プリン", 100, 90, 100, 100)
+    var moster1 = new MonsterCharacter("あばれざる", 100, 115, 100, 100)
+    var moster2 = new MonsterCharacter("おおがらす", 100, 120, 100, 100)
+    var moster3 = new MonsterCharacter("まどうし", 100, 85, 100, 100)
+
+    var gameManager = new GameManager()
+    gameManager.addCharacter(chara1)
+    gameManager.addCharacter(chara2)
+    gameManager.addCharacter(chara3)
+    gameManager.addMonster(moster1)
+    gameManager.addMonster(moster2)
+    gameManager.addMonster(moster3)
+  </script>
+</body>
+
+</html>
