@@ -10,9 +10,72 @@
 <body>
   <canvas id="canvas" width="640" height="480" style="background-color: black;"></canvas>
   <script>
+    const CANVAS_SIZE_W = 640
+    const CANVAS_SIZE_HW = 320 // 画面の半分の広さ
+    const CANVAS_SIZE_H = 480
+    const CANVAS_SIZE_HH = 240 // 画面の半分の高さ
+    const CHARACTER_SIZE = 100 // キャラクターの大きさ
+    const CHARACTER_HSIZE = 50 // キャラクターの半分の大きさ
+    let CHARACTER_POS_X = CANVAS_SIZE_HW - CHARACTER_HSIZE
+    let CHARACTER_POS_Y = CANVAS_SIZE_HH - CHARACTER_HSIZE
     const canvas = document.getElementById("canvas")
+    const ctx = canvas.getContext("2d")
     const img = new Image()
     img.src = "./images/slime.png"
+
+    // drawImage (x, y, width, height)
+    img.onload = () => ctx.drawImage(
+      img,
+      CANVAS_SIZE_HW - CHARACTER_HSIZE,
+      CANVAS_SIZE_HH - CHARACTER_HSIZE,
+      CHARACTER_SIZE,
+      CHARACTER_SIZE
+    )
+
+    window.addEventListener("keydown", (e) => {
+      console.log(e)
+      if (e.key === "ArrowLeft") {
+        CHARACTER_POS_X -= 10
+        ctx.drawImage(
+          img,
+          CHARACTER_POS_X,
+          CHARACTER_POS_Y,
+          CHARACTER_SIZE,
+          CHARACTER_SIZE
+        )
+      }
+      if (e.key === "ArrowUp") {
+        CHARACTER_POS_Y -= 10
+        ctx.drawImage(
+          img,
+          CHARACTER_POS_X,
+          CHARACTER_POS_Y,
+          CHARACTER_SIZE,
+          CHARACTER_SIZE
+        )
+      }
+      if (e.key === "ArrowRight") {
+        CHARACTER_POS_X += 10
+        ctx.drawImage(
+          img,
+          CHARACTER_POS_X,
+          CHARACTER_POS_Y,
+          CHARACTER_SIZE,
+          CHARACTER_SIZE
+        )
+      }
+      if (e.key === "ArrowDown") {
+        CHARACTER_POS_Y += 10
+        ctx.drawImage(
+          img,
+          CHARACTER_POS_X,
+          CHARACTER_POS_Y,
+          CHARACTER_SIZE,
+          CHARACTER_SIZE
+        )
+      }
+    })
+
   </script>
 </body>
 
