@@ -11,6 +11,7 @@ class GameManager {
     this.characterActionList = []; // キャラが選択した行動
     this.monsterActionList = []; // 敵が選択した行動
     this.battleStatus = 0; //
+    this.messageWindow = new MessageWindow();
   }
 
   addCharacter(character) {
@@ -26,6 +27,21 @@ class GameManager {
       ctx.fillText(
         `${chara.name}  ${chara.hp}  ${chara.mp}`,
         140,
+        startY
+      )
+      startY += 26
+    })
+  }
+
+  // このメソッドを修正して、モンスターのステータスを表示する
+  showMonstersStatus() {
+    let startY = 40;  // 初期位置
+    this.monsterList.forEach(monster => {
+      ctx.font = `20px serif`;
+      ctx.fillStyle = "#ffffff"
+      ctx.fillText(
+        `${monster.name}  ${monster.hp}  ${monster.mp}`,
+        400,
         startY
       )
       startY += 26
@@ -91,6 +107,29 @@ class MonsterCharacter {
       return;
     }
     ctx.drawImage(this.image, this.posX, this.posY, this.sizeX, this.sizeY);
+
+  }
+}
+
+class MessageWindow {
+  constructor() {
+    this.message = "";
+    this.font = `20px serif`;
+    this.fillStyle = "#ffffff";
+  }
+
+  update(message) {
+    this.message = message;
+  }
+
+  showMessage() {
+    ctx.font = this.font;
+    ctx.fillStyle = this.fillStyle;
+    ctx.fillText(
+      this.message,
+      50,
+      200
+    )
   }
 }
 
@@ -114,29 +153,19 @@ gameManager.addMonster(moster3);
 setInterval(() => {
   ctx.clearRect(0, 0, canvas.width, canvas.height)
   gameManager.showCharacterStatus()
+  gameManager.showMonstersStatus()
   gameManager.showMonsters()
+  gameManager.messageWindow.showMessage()
 
   // バトルに勝利したか判定する
   // モンスターの全てのHPが0以下になったら勝利
   if (gameManager.monsterList.every(monster => monster.hp <= 0)) {
-    ctx.font = `50px serif`;
-    ctx.fillStyle = "#ffffff"
-    ctx.fillText(
-      `バトルに勝利しました`,
-      50,
-      200
-    )
+    gameManager.messageWindow.update("バトルに勝利しました")
   }
 
   // バトルに敗北したか判定する
   // キャラクターの全てのHPが0以下になったら敗北
   if (gameManager.characterList.every(chara => chara.hp <= 0)) {
-    ctx.font = `50px serif`;
-    ctx.fillStyle = "red"
-    ctx.fillText(
-      `バトルに敗北しました`,
-      50,
-      200
-    )
+    gameManager.messageWindow.update("バトルに敗北しました")
   }
 }, 100)
